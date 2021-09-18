@@ -1,1 +1,1 @@
-# shorter_links
+# make links shorter using django
