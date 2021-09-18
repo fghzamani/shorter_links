@@ -30,13 +30,19 @@ def home_view(request):
         used_form = ShortenerForm(request.POST)
 
         if used_form.is_valid():
-            
-            shortened_object = used_form.save()
+            cd = used_form.cleaned_data
+            long_url = Links.objects.get(long_url = cd['long_url'])
+            if long_url ==None: # برای این که یه لینک فقط یه فرم کوتاه داشته باشه و یه لینک چندتا لینک کوتاه ازش تولید نشه
+                shortened_object = used_form.save()
 
-            new_url = request.build_absolute_uri('/') + shortened_object.short_url
-            
-            long_url = shortened_object.long_url 
+                new_url = request.build_absolute_uri('/') + shortened_object.short_url
+                
+                long_url = shortened_object.long_url 
              
+                
+            else:
+                new_url = long_url.short_url
+            
             context['new_url']  = new_url
             context['long_url'] = long_url
              
